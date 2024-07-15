@@ -34,8 +34,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!isFirstRender) {
-      saveTodoList();
+    if (!isLoadUpdate) {
+      if (!isFirstRender) {
+        saveTodoList();
+      }
     } else {
       isFirstRender = false;
     }
@@ -92,6 +94,7 @@ export default function App() {
   async function loadTodoList() {
     try {
       const todoListString = await AsyncStorage.getItem("@todoList");
+      isLoadUpdate = true;
       if (todoListString) {
         setTodoList(JSON.parse(todoListString));
       }
