@@ -12,7 +12,7 @@ import { s } from "./App.style";
 import uuid from "react-native-uuid";
 import { Header } from "./components/Header/Header";
 import { CardToDO } from "./components/CardToDo/CardToDo";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TabBottomMenu } from "./components/TabBottomMenu/TabBottomMenu";
 import { ButtonAdd } from "./components/ButtonAdd/ButtonAdd";
 import { CustomDialog } from "./components/CustomDialog/CustomDialog";
@@ -28,6 +28,7 @@ export default function App() {
 
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const scrollViewRef = useRef();
 
   useEffect(() => {
     loadTodoList();
@@ -119,8 +120,12 @@ export default function App() {
         isCompleted: false,
       };
       setTodoList([...todoList, newTodo]);
+
       setInputValue("");
       setShowAddDialog(false);
+      setTimeout(() => {
+        scrollViewRef.current.scrollToEnd({ animated: false });
+      }, 300);
     }
   }
 
@@ -137,7 +142,7 @@ export default function App() {
             <Header />
           </View>
           <View style={s.body}>
-            <ScrollView>{renderTodoList()}</ScrollView>
+            <ScrollView ref={scrollViewRef}>{renderTodoList()}</ScrollView>
           </View>
           <ButtonAdd onPress={showAddtodoDialog} />
         </SafeAreaView>
@@ -150,10 +155,6 @@ export default function App() {
         />
       </View>
       <View>
-        {/* <Button
-          title="Show Add Dialog"
-          onPress={() => setShowAddDialog(true)}
-        /> */}
         {showAddDialog && (
           <CustomDialog
             visible={showAddDialog}
