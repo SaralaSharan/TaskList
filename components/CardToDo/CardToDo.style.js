@@ -6,6 +6,7 @@ export const s = StyleSheet.create({
     height: 25,
   },
   card: {
+    marginTop: 20,
     backgroundColor: "white",
     height: 115,
     shadowColor: "#000",
